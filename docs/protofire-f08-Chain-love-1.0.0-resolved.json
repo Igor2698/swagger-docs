@@ -14,6 +14,10 @@
     {
       "name": "Keys",
       "description": "Operations related to API key management"
+    }, 
+    {
+      "name": "Statistics",
+      "description": "Operations related to get methods or keys usage statistics"
     }
   ],
   "paths": {
@@ -84,7 +88,7 @@
     }, 
  "/statistics/methods": {
   "get": {
-    "tags": ["Keys"],
+    "tags": ["Statistics"],
     "summary": "Get Method Usage Statistics",
     "description": "Returns statistics about methods used, including call count and credits spent. User is identified via Bearer token.",
     "parameters": [
@@ -137,7 +141,7 @@
   }
 }, "/statistics/keys": {
   "get": {
-    "tags": ["Keys"],
+    "tags": ["Statistics"],
     "summary": "Get Key Usage Statistics by Day",
     "description": "Returns daily statistics for user's API keys. User is identified via Bearer token.",
     "parameters": [
