@@ -2,20 +2,32 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Proteus REST API",
-    "description": "REST API for managing API keys. Supports bulk creation of keys with usage constraints and access control.",
+    "description": "RESTful API for managing API keys. This documentation describes the input and output formats for working with the system.",
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "https://api.proteus.app",
-      "description": "Production Server"
+      "url": "https://virtserver.swaggerhub.com/protofire-f08/Chain-love/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Keys",
+      "description": "Operations related to API key management"
     }
   ],
   "paths": {
     "/keys": {
       "post": {
+        "tags": ["Keys"],
         "summary": "Create API Keys",
-        "description": "Creates one or more API keys for the authenticated user.",
+        "description": "Creates one or more API keys with specified access rules.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -25,16 +37,23 @@
               },
               "examples": {
                 "CreateKeys": {
-                  "summary": "Create API Keys",
+                  "summary": "Example of a createKeys request",
                   "value": {
                     "keys": [
                       {
                         "name": "Frontend Key",
                         "description": "Used for client access",
                         "type": "free",
-                        "allowedIps": ["192.168.0.1"],
-                        "allowedMethods": ["eth_call", "eth_getLogs"],
-                        "allowedDomains": ["myapp.com"],
+                        "allowedIps": [
+                          "192.168.0.1"
+                        ],
+                        "allowedMethods": [
+                          "eth_call",
+                          "eth_getLogs"
+                        ],
+                        "allowedDomains": [
+                          "myapp.com"
+                        ],
                         "rateLimit": 100,
                         "rateLimitPeriod": "minute",
                         "endpoint": "Mainnet RPC"
@@ -47,8 +66,8 @@
           }
         },
         "responses": {
-          "201": {
-            "description": "Keys created successfully",
+          "200": {
+            "description": "Successfully created keys",
             "content": {
               "application/json": {
                 "schema": {
@@ -57,53 +76,46 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid request"
+          "401": {
+            "description": "Unauthorized"
           },
-          "500": {
-            "description": "Internal server error"
+          "400": {
+            "description": "Bad request"
           }
         }
       }
     }
   },
   "components": {
-      "securitySchemes": {
-    "BearerAuth": {
-      "type": "http",
-      "scheme": "bearer",
-      "bearerFormat": "JWT"
-    }
-  },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
     "schemas": {
       "CreateKeysRequest": {
         "type": "object",
-        "required": ["keys"],
         "properties": {
           "keys": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CreateKeyInput"
+              "$ref": "#/components/schemas/ApiKey"
             }
           }
-        }
+        },
+        "required": ["keys"]
       },
-      "CreateKeysResponse": {
+      "ApiKey": {
         "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "example": "created"
-          },
-          "createdCount": {
-            "type": "integer",
-            "example": 1
-          }
-        }
-      },
-      "CreateKeyInput": {
-        "type": "object",
-        "required": ["endpoint", "name", "rateLimit", "rateLimitPeriod", "type"],
+        "required": [
+          "endpoint",
+          "name",
+          "rateLimit",
+          "rateLimitPeriod",
+          "type"
+        ],
         "properties": {
           "name": {
             "type": "string"
@@ -142,6 +154,21 @@
           },
           "endpoint": {
             "type": "string"
+          }
+        }
+      },
+      "CreateKeysResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "created"
+          },
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       }
