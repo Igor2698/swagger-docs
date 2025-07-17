@@ -68,6 +68,13 @@
     }
   },
   "components": {
+      "securitySchemes": {
+    "BearerAuth": {
+      "type": "http",
+      "scheme": "bearer",
+      "bearerFormat": "JWT"
+    }
+  },
     "schemas": {
       "CreateKeysRequest": {
         "type": "object",
