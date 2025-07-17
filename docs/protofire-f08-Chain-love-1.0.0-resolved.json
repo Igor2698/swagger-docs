@@ -86,31 +86,11 @@
         }
       }
     }, 
- "/statistics/methods": {
+"/statistics/methods": {
   "get": {
-    "tags": ["Statistics"],
+    "tags": ["Keys"],
     "summary": "Get Method Usage Statistics",
-    "description": "Returns statistics about methods used, including call count and credits spent. User is identified via Bearer token.",
-    "parameters": [
-      {
-        "name": "keysIds",
-        "in": "query",
-        "description": "Comma-separated list of key IDs",
-        "required": false,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "tokenTypes",
-        "in": "query",
-        "description": "Comma-separated list of token types",
-        "required": false,
-        "schema": {
-          "type": "string"
-        }
-      }
-    ],
+    "description": "Returns method usage statistics (calls and credits spent) for the authenticated user.",
     "security": [
       {
         "BearerAuth": []
@@ -118,52 +98,28 @@
     ],
     "responses": {
       "200": {
-        "description": "Method usage statistics",
+        "description": "List of methods used",
         "content": {
           "application/json": {
             "schema": {
-              "type": "object",
-              "properties": {
-                "result": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MethodUsageStats"
-                  }
-                }
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/MethodUsageStats"
               }
             }
           }
         }
       },
-      "400": { "description": "Bad request" },
-      "401": { "description": "Unauthorized" }
+      "401": { "description": "Unauthorized" },
+      "400": { "description": "Bad request" }
     }
   }
-}, "/statistics/keys": {
+},
+"/statistics/keys": {
   "get": {
-    "tags": ["Statistics"],
-    "summary": "Get Key Usage Statistics by Day",
-    "description": "Returns daily statistics for user's API keys. User is identified via Bearer token.",
-    "parameters": [
-      {
-        "name": "keysIds",
-        "in": "query",
-        "description": "Comma-separated list of key IDs",
-        "required": false,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "tokenTypes",
-        "in": "query",
-        "description": "Comma-separated list of token types",
-        "required": false,
-        "schema": {
-          "type": "string"
-        }
-      }
-    ],
+    "tags": ["Keys"],
+    "summary": "Get Daily Key Usage Statistics",
+    "description": "Returns daily usage statistics for all keys belonging to the authenticated user.",
     "security": [
       {
         "BearerAuth": []
@@ -171,20 +127,24 @@
     ],
     "responses": {
       "200": {
-        "description": "Daily statistics for keys",
+        "description": "Daily usage statistics",
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/MonthlyKeyStatResponse"
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/DailyKeyStat"
+              }
             }
           }
         }
       },
-      "400": { "description": "Bad request" },
-      "401": { "description": "Unauthorized" }
+      "401": { "description": "Unauthorized" },
+      "400": { "description": "Bad request" }
     }
   }
 }
+
 
 
   },
@@ -276,7 +236,57 @@
             }
           }
         }
+      }, "MethodUsageStats": {
+  "type": "object",
+  "properties": {
+    "method": {
+      "type": "string",
+      "description": "RPC method name"
+    },
+    "numberOfUses": {
+      "type": "integer",
+      "description": "Number of times the method was called"
+    },
+    "numberOfCreditsUses": {
+      "type": "integer",
+      "description": "Credits consumed by this method"
+    }
+  },
+  "required": ["method", "numberOfUses", "numberOfCreditsUses"]
+},
+"DailyKeyStat": {
+  "type": "object",
+  "properties": {
+    "day": {
+      "type": "string",
+      "format": "date",
+      "description": "Day of the usage statistics"
+    },
+    "keysUsed": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/KeyStat"
       }
+    }
+  },
+  "required": ["day", "keysUsed"]
+},
+"KeyStat": {
+  "type": "object",
+  "properties": {
+    "tokenId": {
+      "type": "string"
+    },
+    "tokenType": {
+      "type": "string"
+    },
+    "numberOfUses": {
+      "type": "integer"
+    }
+  },
+  "required": ["tokenId", "tokenType", "numberOfUses"]
+}
+
     }
   }
 }
