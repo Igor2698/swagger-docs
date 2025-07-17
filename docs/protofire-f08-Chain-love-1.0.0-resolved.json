@@ -52,10 +52,41 @@
                       ]
                     }
                   }
+                }, 
+              "StayAlone": {
+                  "summary": "Example of createKeys method",
+                  "value": {
+                    "jsonrpc": "2.0",
+                    "method": "createKeys",
+                    "id": 1,
+                    "params": {
+                      "keys": [
+                        {
+                          "name": "Frontend Key",
+                          "description": "Used for client access",
+                          "type": "free",
+                          "allowedIps": [
+                            "192.168.0.1"
+                          ],
+                          "allowedMethods": [
+                            "eth_call",
+                            "eth_getLogs"
+                          ],
+                          "allowedDomains": [
+                            "myapp.com"
+                          ],
+                          "rateLimit": 100,
+                          "rateLimitPeriod": "minute",
+                          "endpoint": "Mainnet RPC"
+                        }
+                      ]
+                    }
+                  }
                 }
               }
             }
           },
+          
           "required": true
         },
         "responses": {
