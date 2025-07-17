@@ -51,6 +51,8 @@
                         ],
                         "rateLimit": 100,
                         "rateLimitPeriod": "minute",
+                        "creditsLimit": 100000,
+                        "creditsLimitPeriod": "hour",
                         "endpoint": "Mainnet RPC"
                       }
                     ]
@@ -139,6 +141,13 @@
             "type": "integer"
           },
           "rateLimitPeriod": {
+            "type": "string",
+            "enum": ["minute", "hour", "day"]
+          },
+            "credtitsLimit": {
+            "type": "integer"
+          },
+          "creditsLimitPeriod": {
             "type": "string",
             "enum": ["minute", "hour", "day"]
           },
