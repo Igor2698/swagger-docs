@@ -1,0 +1,225 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Proteus JSON-RPC API",
+    "description": "JSON-RPC 2.0 endpoint for managing API keys via a single HTTP route. This Swagger documents the input/output format of JSON-RPC requests.\n",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/protofire-f08/Chain-love/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    }
+  ],
+  "paths": {
+    "/rpc": {
+      "post": {
+        "summary": "JSON-RPC endpoint",
+        "description": "Accepts JSON-RPC 2.0 requests",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JsonRpcRequest"
+              },
+              "examples": {
+                "CreateKeys": {
+                  "summary": "Example of createKeys method",
+                  "value": {
+                    "jsonrpc": "2.0",
+                    "method": "createKeys",
+                    "id": 1,
+                    "params": {
+                      "keys": [
+                        {
+                          "name": "Frontend Key",
+                          "description": "Used for client access",
+                          "type": "free",
+                          "allowedIps": [
+                            "192.168.0.1"
+                          ],
+                          "allowedMethods": [
+                            "eth_call",
+                            "eth_getLogs"
+                          ],
+                          "allowedDomains": [
+                            "myapp.com"
+                          ],
+                          "rateLimit": 100,
+                          "rateLimitPeriod": "minute",
+                          "endpoint": "Mainnet RPC"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "JSON-RPC success or error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonRpcResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "JsonRpcRequest": {
+        "required": [
+          "id",
+          "jsonrpc",
+          "method"
+        ],
+        "type": "object",
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "example": "2.0"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "createKeys"
+            ]
+          },
+          "id": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ]
+          },
+          "params": {
+            "$ref": "#/components/schemas/JsonRpcRequest_params"
+          }
+        }
+      },
+      "JsonRpcResponse": {
+        "required": [
+          "id",
+          "jsonrpc"
+        ],
+        "type": "object",
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "example": "2.0"
+          },
+          "result": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "created"
+                  }
+                }
+              }
+            ]
+          },
+          "error": {
+            "$ref": "#/components/schemas/JsonRpcResponse_error"
+          }
+        }
+      },
+      "CreateKeyInput": {
+        "required": [
+          "endpoint",
+          "name",
+          "rateLimit",
+          "rateLimitPeriod",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "free",
+              "paid"
+            ]
+          },
+          "allowedIps": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "allowedMethods": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "allowedDomains": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rateLimit": {
+            "type": "integer"
+          },
+          "rateLimitPeriod": {
+            "type": "string",
+            "enum": [
+              "minute",
+              "hour",
+              "day"
+            ]
+          },
+          "endpoint": {
+            "type": "string"
+          }
+        }
+      },
+      "JsonRpcRequest_params": {
+        "type": "object",
+        "properties": {
+          "keys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateKeyInput"
+            }
+          }
+        }
+      },
+      "JsonRpcResponse_error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": -32000
+          },
+          "message": {
+            "type": "string",
+            "example": "Failed to create tokens"
+          }
+        },
+        "nullable": true
+      }
+    }
+  }
+}
