@@ -52,8 +52,8 @@
                       ]
                     }
                   }
-                }, 
-              "StayAlone": {
+                },
+                "StayAlone": {
                   "summary": "Example of another method",
                   "value": {
                     "jsonrpc": "2.0",
@@ -121,7 +121,8 @@
           "method": {
             "type": "string",
             "enum": [
-              "createKeys"
+                 "createKeys",
+                "another"
             ]
           },
           "id": {
