@@ -81,7 +81,108 @@
           }
         }
       }
+    }, 
+ "/statistics/methods": {
+  "get": {
+    "tags": ["Keys"],
+    "summary": "Get Method Usage Statistics",
+    "description": "Returns statistics about methods used, including call count and credits spent. User is identified via Bearer token.",
+    "parameters": [
+      {
+        "name": "keysIds",
+        "in": "query",
+        "description": "Comma-separated list of key IDs",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "tokenTypes",
+        "in": "query",
+        "description": "Comma-separated list of token types",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "security": [
+      {
+        "BearerAuth": []
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Method usage statistics",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MethodUsageStats"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": { "description": "Bad request" },
+      "401": { "description": "Unauthorized" }
     }
+  }
+}, "/statistics/keys": {
+  "get": {
+    "tags": ["Keys"],
+    "summary": "Get Key Usage Statistics by Day",
+    "description": "Returns daily statistics for user's API keys. User is identified via Bearer token.",
+    "parameters": [
+      {
+        "name": "keysIds",
+        "in": "query",
+        "description": "Comma-separated list of key IDs",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "tokenTypes",
+        "in": "query",
+        "description": "Comma-separated list of token types",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "security": [
+      {
+        "BearerAuth": []
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Daily statistics for keys",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MonthlyKeyStatResponse"
+            }
+          }
+        }
+      },
+      "400": { "description": "Bad request" },
+      "401": { "description": "Unauthorized" }
+    }
+  }
+}
+
+
   },
   "components": {
     "securitySchemes": {
