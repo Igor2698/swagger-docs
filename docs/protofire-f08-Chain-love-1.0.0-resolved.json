@@ -54,10 +54,10 @@
                   }
                 }, 
               "StayAlone": {
-                  "summary": "Example of createKeys method",
+                  "summary": "Example of another method",
                   "value": {
                     "jsonrpc": "2.0",
-                    "method": "createKeys",
+                    "method": "another",
                     "id": 1,
                     "params": {
                       "keys": [
