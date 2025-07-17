@@ -5,11 +5,10 @@
     "description": "RESTful API for managing API keys. This documentation describes the input and output formats for working with the system.",
     "version": "1.0.0"
   },
-  "servers": [
-    {
-      "url": "https://virtserver.swaggerhub.com/protofire-f08/Chain-love/1.0.0",
-      "description": "SwaggerHub API Auto Mocking"
-    }
+  "host": "localhost:8080",
+  "basePath": "/v1",
+  "schemes": [
+    "http"
   ],
   "tags": [
     {
