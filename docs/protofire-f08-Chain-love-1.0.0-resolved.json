@@ -1,10 +1,11 @@
 {
   "openapi": "3.0.3",
-  "info": {
-    "title": "Proteus REST API",
-    "description": "RESTful API for managing API keys. This documentation describes the input and output formats for working with the system.",
-    "version": "1.0.0"
-  },
+"info": {
+  "title": "Proteus REST API",
+  "description": "Proteus is a unified RESTful API for managing and monitoring user-specific configurations across decentralized services. This includes creating and managing API keys, tracking usage statistics, and provisioning infrastructure such as subgraphs. All operations are authenticated via Bearer tokens, enabling secure multi-tenant access and fine-grained control over user resources.",
+  "version": "1.0.0"
+}
+,
  "servers": [
     {
       "url": "https://api.myservice.com/v1"
@@ -88,9 +89,9 @@
     }, 
 "/statistics/methods": {
   "get": {
-    "tags": ["Keys"],
-    "summary": "Get Method Usage Statistics",
-    "description": "Returns method usage statistics (calls and credits spent) for the authenticated user.",
+    "tags": ["Statistics"],
+    "summary": "Get Monthly Method Usage Statistics",
+    "description": "Returns aggregated usage statistics for RPC methods called by the authenticated user over the current month. Includes number of calls and total credits spent per method.",
     "security": [
       {
         "BearerAuth": []
@@ -98,7 +99,7 @@
     ],
     "responses": {
       "200": {
-        "description": "List of methods used",
+        "description": "Monthly method usage statistics",
         "content": {
           "application/json": {
             "schema": {
@@ -114,12 +115,13 @@
       "400": { "description": "Bad request" }
     }
   }
-},
+}
+,
 "/statistics/keys": {
   "get": {
-    "tags": ["Keys"],
-    "summary": "Get Daily Key Usage Statistics",
-    "description": "Returns daily usage statistics for all keys belonging to the authenticated user.",
+    "tags": ["Statistics"],
+    "summary": "Get Monthly Key Usage Statistics",
+    "description": "Returns monthly usage statistics for all API keys belonging to the authenticated user. Data includes token usage count and token types grouped by day.",
     "security": [
       {
         "BearerAuth": []
@@ -127,7 +129,7 @@
     ],
     "responses": {
       "200": {
-        "description": "Daily usage statistics",
+        "description": "Monthly key usage statistics",
         "content": {
           "application/json": {
             "schema": {
@@ -144,6 +146,7 @@
     }
   }
 }
+
 
 
 
